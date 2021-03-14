@@ -9,6 +9,7 @@
 import React from 'react';
 import {
   StyleSheet,
+  Alert,
   TouchableOpacity,
   SafeAreaView,
   View,
@@ -19,6 +20,7 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   TextInput,
+  Easing,
 } from 'react-native';
 
 const App = () => {
@@ -26,9 +28,21 @@ const App = () => {
   const [angle, setAngle] = React.useState('');
   const [theoryDepth, setTheoryDepth] = React.useState('');
 
+  function toDegrees(radians) {
+    return radians * (180 / Math.PI);
+  }
   const pressed = () => {
-    console.log(depth + angle);
-    setTheoryDepth(depth + angle);
+    let answer = 0;
+
+    if (depth > 0 && angle >= 0 && angle < 91) {
+      answer = depth / Math.cos(toDegrees(angle));
+      setTheoryDepth(answer + ' Feet(s)');
+    }
+    if (depth === '' || depth < 0) {
+      Alert.alert('Check the Depth', 'Depth should be higher than 0 feet');
+    } else if (angle === '' || angle > 90) {
+      Alert.alert('Check the Angle', 'Angle should be in between 0 and 90');
+    }
   };
   const cleared = () => {
     setDepth('');
@@ -39,7 +53,7 @@ const App = () => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
-      <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View
           style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
           <View style={{flex: 1, alignItems: 'center'}}>
@@ -51,8 +65,9 @@ const App = () => {
               flexDirection: 'row',
               borderWidth: 1,
               alignItems: 'center',
+              justifyContent: 'space-evenly',
             }}>
-            <Text style={{width: 100}}>Depth ( in Feets )</Text>
+            <Text style={{width: 150}}>Actual Depth (in Feet(s)</Text>
             <TextInput
               keyboardType="numeric"
               type="number"
@@ -70,8 +85,9 @@ const App = () => {
               flexDirection: 'row',
               borderWidth: 1,
               alignItems: 'center',
+              justifyContent: 'space-evenly',
             }}>
-            <Text style={{width: 100}}>Angle ( Degrees )</Text>
+            <Text style={{width: 150}}>Angle ( Degrees )</Text>
             <TextInput
               keyboardType="numeric"
               type="text"
