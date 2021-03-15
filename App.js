@@ -29,20 +29,22 @@ const App = () => {
   const [angle, setAngle] = React.useState('');
   const [theoryDepth, setTheoryDepth] = React.useState('');
 
-  function toDegrees(radians) {
-    return radians * (180 / Math.PI);
+  function toRadians(degree) {
+    return (degree * Math.PI) / 180;
   }
   const pressed = () => {
     let answer = 0;
 
     if (depth > 0 && (angle > 0 || angle === 0) && angle < 91) {
-      answer = depth / Math.cos(toDegrees(angle));
+      answer = depth / Math.cos(toRadians(angle));
       setTheoryDepth(answer.toPrecision(4) + ' Feet(s)');
     }
     if (depth === '' || depth < 0) {
       Alert.alert('Check the Depth', 'Depth should be higher than 0 feet');
     } else if (angle === '' || angle > 90) {
       Alert.alert('Check the Angle', 'Angle should be in between 0 and 90');
+    } else if (depth === 0) {
+      setTheoryDepth('0 Feet');
     }
   };
   const cleared = () => {
@@ -62,13 +64,12 @@ const App = () => {
             justifyContent: 'center',
             backgroundColor: '#D9D6D0',
           }}>
-
           <View
             style={{
-              marginTop:20,
-              alignSelf:'center',
-             aspectRatio: 4/2, 
-             height: 100,
+              marginTop: 20,
+              alignSelf: 'center',
+              aspectRatio: 4 / 2,
+              height: 100,
             }}>
             <Image
               source={Logo}
@@ -100,10 +101,9 @@ const App = () => {
                   height: 35,
                   flex: 2,
                   width: 100,
-                  backgroundColor: 'white', 
+                  backgroundColor: 'white',
                 }}
                 keyboardType="numeric"
-                type="text"
                 placeholder="Depth"
                 value={depth}
                 onChangeText={(text) => {
@@ -140,10 +140,9 @@ const App = () => {
                   height: 35,
                   flex: 2,
                   width: 100,
-                  backgroundColor: 'white', 
+                  backgroundColor: 'white',
                 }}
                 keyboardType="numeric"
-                type="text"
                 pattern="[0-9]*"
                 placeholder="Angle"
                 value={angle}
