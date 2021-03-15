@@ -12,6 +12,7 @@ import {
   Alert,
   TouchableOpacity,
   SafeAreaView,
+  Image,
   View,
   Keyboard,
   Text,
@@ -22,7 +23,7 @@ import {
   TextInput,
   Easing,
 } from 'react-native';
-
+const Logo = require('./assets/Logo.png');
 const App = () => {
   const [depth, setDepth] = React.useState('');
   const [angle, setAngle] = React.useState('');
@@ -34,9 +35,9 @@ const App = () => {
   const pressed = () => {
     let answer = 0;
 
-    if (depth > 0 && angle >= 0 && angle < 91) {
+    if (depth > 0 && (angle > 0 || angle === 0) && angle < 91) {
       answer = depth / Math.cos(toDegrees(angle));
-      setTheoryDepth(answer + ' Feet(s)');
+      setTheoryDepth(answer.toPrecision(4) + ' Feet(s)');
     }
     if (depth === '' || depth < 0) {
       Alert.alert('Check the Depth', 'Depth should be higher than 0 feet');
@@ -55,68 +56,173 @@ const App = () => {
       style={styles.container}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View
-          style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
-          <View style={{flex: 1, alignItems: 'center'}}>
-            <Text>Reelingg</Text>
-          </View>
+          style={{
+            flex: 1,
+            flexDirection: 'column',
+            justifyContent: 'center',
+            backgroundColor: '#D9D6D0',
+          }}>
+
           <View
             style={{
-              flex: 1,
-              flexDirection: 'row',
-              borderWidth: 1,
-              alignItems: 'center',
-              justifyContent: 'space-evenly',
+              marginTop:20,
+              alignSelf:'center',
+             aspectRatio: 4/2, 
+             height: 100,
             }}>
-            <Text style={{width: 150}}>Actual Depth (in Feet(s)</Text>
-            <TextInput
-              keyboardType="numeric"
-              type="number"
-              placeholder="Depth"
-              value={depth}
-              onChangeText={(text) => {
-                setTheoryDepth('');
-                setDepth(parseInt(text));
-              }}
+            <Image
+              source={Logo}
+              resizeMode="stretch"
+              style={{flex: 1, width: null, height: null}}
             />
           </View>
           <View
             style={{
-              flex: 1,
-              flexDirection: 'row',
-              borderWidth: 1,
+              flex: 2,
               alignItems: 'center',
-              justifyContent: 'space-evenly',
+              borderWidth: 1,
+              margin: 10,
+              padding: 10,
             }}>
-            <Text style={{width: 150}}>Angle ( Degrees )</Text>
-            <TextInput
-              keyboardType="numeric"
-              type="text"
-              pattern="[0-9]*"
-              placeholder="Angle"
-              value={angle}
-              onChangeText={(text) => {
-                setTheoryDepth('');
-                setAngle(parseInt(text));
-              }}
-            />
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-evenly',
+              }}>
+              <Text style={{fontWeight: 'bold', width: 140, flex: 2}}>
+                Actual Depth
+              </Text>
+              <TextInput
+                style={{
+                  paddingLeft: 5,
+                  height: 35,
+                  flex: 2,
+                  width: 100,
+                  backgroundColor: 'white', 
+                }}
+                keyboardType="numeric"
+                type="text"
+                placeholder="Depth"
+                value={depth}
+                onChangeText={(text) => {
+                  setTheoryDepth('');
+                  setDepth(parseInt(text));
+                }}
+              />
+              <Text
+                style={{
+                  height: 35,
+                  lineHeight: 35,
+                  paddingHorizontal: 10,
+                  width: 90,
+                  color: 'grey',
+                  fontWeight: 'bold',
+                  backgroundColor: 'white',
+                }}>
+                Feet(s)
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-evenly',
+              }}>
+              <Text style={{fontWeight: 'bold', width: 140, flex: 2}}>
+                Angle
+              </Text>
+              <TextInput
+                style={{
+                  paddingLeft: 5,
+                  height: 35,
+                  flex: 2,
+                  width: 100,
+                  backgroundColor: 'white', 
+                }}
+                keyboardType="numeric"
+                type="text"
+                pattern="[0-9]*"
+                placeholder="Angle"
+                value={angle}
+                onChangeText={(text) => {
+                  setTheoryDepth('');
+                  setAngle(parseInt(text));
+                }}
+              />
+              <Text
+                style={{
+                  height: 35,
+                  lineHeight: 35,
+                  paddingHorizontal: 10,
+                  width: 90,
+                  color: 'grey',
+                  fontWeight: 'bold',
+                  backgroundColor: 'white',
+                }}>
+                Degree(s)
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 2,
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+              }}>
+              <TouchableOpacity
+                style={{
+                  width: '90%',
+                  height: 37,
+                  backgroundColor: '#83A603',
+                  justifyContent: 'center',
+                  marginTop: 10,
+                  margin: 5,
+                }}
+                onPress={pressed}>
+                <Text style={{textAlign: 'center'}}>Calculate</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  width: '90%',
+                  height: 37,
+                  backgroundColor: 'red',
+                  justifyContent: 'center',
+                  margin: 5,
+                }}
+                onPress={cleared}>
+                <Text style={{textAlign: 'center', justifyContent: 'center'}}>
+                  Clear All
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <View
             style={{
+              flex: 1,
+              borderWidth: 1,
               alignItems: 'center',
               justifyContent: 'center',
+              margin: 10,
             }}>
-            <TouchableOpacity onPress={pressed}>
-              <Text>Calculate</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={cleared}>
-              <Text>Clear All</Text>
-            </TouchableOpacity>
+            <Text style={{padding: 10, fontWeight: 'bold'}}>
+              Theoritical Depth
+            </Text>
+            <Text
+              style={{
+                backgroundColor: 'white',
+                marginBottom: 10,
+                width: 200,
+                height: 50,
+                lineHeight: 50,
+                textAlign: 'center',
+              }}>
+              {theoryDepth}
+            </Text>
           </View>
-          {/*eof*/}
-          <View style={{flex: 1, borderWidth: 1, alignItems: 'center'}}>
-            <Text>Theoritical Depth</Text>
-            <Text>{theoryDepth}</Text>
-          </View>
+          <View style={{flexBasis: 20}} />
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
