@@ -28,13 +28,11 @@ const App = () => {
   const [depth, setDepth] = React.useState('');
   const [angle, setAngle] = React.useState('');
   const [theoryDepth, setTheoryDepth] = React.useState('');
-
   function toRadians(degree) {
     return (degree * Math.PI) / 180;
   }
   const pressed = () => {
     let answer = 0;
-
     if (depth > 0 && (angle > 0 || angle === 0) && angle < 91) {
       answer = depth / Math.cos(toRadians(angle));
       setTheoryDepth(answer.toPrecision(4) + ' Feet(s)');
@@ -52,24 +50,36 @@ const App = () => {
     setAngle('');
     setTheoryDepth('');
   };
+  const PADDING = 10;
+  const LINE_HEIGHT = 35;
+  const LOGO_HEIGHT = 100;
+  const LOGO_ASPECT_RATIO = 4 / 2;
+  const LABEL_WIDTH = 100;
+  const INPUT_WIDTH = 90;
+  const INPUT_BG_COLOR = 'white';
+  const ANSWER_WIDTH = 200;
+  const CLEAR_BUTTON_BG = 'red';
+  const CALCULATE_BUTTON_BG = '#83A603';
+  const SUFFIX_COLOR = 'grey';
+  const BACKGROUND_COLOR = '#D9D6D0';
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}>
+      style={{flex: 1}}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View
           style={{
             flex: 1,
             flexDirection: 'column',
             justifyContent: 'center',
-            backgroundColor: '#D9D6D0',
+            backgroundColor: BACKGROUND_COLOR,
           }}>
           <View
             style={{
-              marginTop: 20,
+              marginTop: PADDING * 2,
               alignSelf: 'center',
-              aspectRatio: 4 / 2,
-              height: 100,
+              aspectRatio: LOGO_ASPECT_RATIO,
+              height: LOGO_HEIGHT,
             }}>
             <Image
               source={Logo}
@@ -82,8 +92,8 @@ const App = () => {
               flex: 2,
               alignItems: 'center',
               borderWidth: 1,
-              margin: 10,
-              padding: 10,
+              margin: PADDING,
+              padding: PADDING,
             }}>
             <View
               style={{
@@ -92,16 +102,17 @@ const App = () => {
                 alignItems: 'center',
                 justifyContent: 'space-evenly',
               }}>
-              <Text style={{fontWeight: 'bold', width: 140, flex: 2}}>
+              <Text
+                style={{flex: 2, fontWeight: 'bold', width: LOGO_ASPECT_RATIO}}>
                 Actual Depth
               </Text>
               <TextInput
                 style={{
-                  paddingLeft: 5,
-                  height: 35,
                   flex: 2,
-                  width: 100,
-                  backgroundColor: 'white',
+                  paddingLeft: PADDING / 2,
+                  height: LINE_HEIGHT,
+                  width: LABEL_WIDTH,
+                  backgroundColor: INPUT_BG_COLOR,
                 }}
                 keyboardType="numeric"
                 placeholder="Depth"
@@ -113,13 +124,13 @@ const App = () => {
               />
               <Text
                 style={{
-                  height: 35,
-                  lineHeight: 35,
-                  paddingHorizontal: 10,
-                  width: 90,
-                  color: 'grey',
+                  height: LINE_HEIGHT,
+                  lineHeight: LINE_HEIGHT,
+                  paddingHorizontal: PADDING,
+                  width: INPUT_WIDTH,
+                  color: SUFFIX_COLOR,
                   fontWeight: 'bold',
-                  backgroundColor: 'white',
+                  backgroundColor: INPUT_BG_COLOR,
                 }}>
                 Feet(s)
               </Text>
@@ -131,16 +142,17 @@ const App = () => {
                 alignItems: 'center',
                 justifyContent: 'space-evenly',
               }}>
-              <Text style={{fontWeight: 'bold', width: 140, flex: 2}}>
+              <Text
+                style={{fontWeight: 'bold', width: LOGO_ASPECT_RATIO, flex: 2}}>
                 Angle
               </Text>
               <TextInput
                 style={{
-                  paddingLeft: 5,
-                  height: 35,
+                  paddingLeft: PADDING / 2,
+                  height: LINE_HEIGHT,
                   flex: 2,
-                  width: 100,
-                  backgroundColor: 'white',
+                  width: LABEL_WIDTH,
+                  backgroundColor: INPUT_BG_COLOR,
                 }}
                 keyboardType="numeric"
                 pattern="[0-9]*"
@@ -153,13 +165,13 @@ const App = () => {
               />
               <Text
                 style={{
-                  height: 35,
-                  lineHeight: 35,
-                  paddingHorizontal: 10,
-                  width: 90,
+                  height: LINE_HEIGHT,
+                  lineHeight: LINE_HEIGHT,
+                  paddingHorizontal: PADDING,
+                  width: INPUT_WIDTH,
                   color: 'grey',
                   fontWeight: 'bold',
-                  backgroundColor: 'white',
+                  backgroundColor: INPUT_BG_COLOR,
                 }}>
                 Degree(s)
               </Text>
@@ -174,11 +186,11 @@ const App = () => {
               <TouchableOpacity
                 style={{
                   width: '90%',
-                  height: 37,
-                  backgroundColor: '#83A603',
+                  height: LINE_HEIGHT,
+                  backgroundColor: CALCULATE_BUTTON_BG,
                   justifyContent: 'center',
-                  marginTop: 10,
-                  margin: 5,
+                  marginTop: PADDING,
+                  margin: PADDING / 2,
                 }}
                 onPress={pressed}>
                 <Text style={{textAlign: 'center'}}>Calculate</Text>
@@ -186,10 +198,10 @@ const App = () => {
               <TouchableOpacity
                 style={{
                   width: '90%',
-                  height: 37,
-                  backgroundColor: 'red',
+                  height: LINE_HEIGHT,
+                  backgroundColor: CLEAR_BUTTON_BG,
                   justifyContent: 'center',
-                  margin: 5,
+                  margin: PADDING / 2,
                 }}
                 onPress={cleared}>
                 <Text style={{textAlign: 'center', justifyContent: 'center'}}>
@@ -204,51 +216,28 @@ const App = () => {
               borderWidth: 1,
               alignItems: 'center',
               justifyContent: 'center',
-              margin: 10,
+              margin: PADDING,
             }}>
-            <Text style={{padding: 10, fontWeight: 'bold'}}>
+            <Text style={{padding: PADDING, fontWeight: 'bold'}}>
               Theoritical Depth
             </Text>
             <Text
               style={{
-                backgroundColor: 'white',
-                marginBottom: 10,
-                width: 200,
-                height: 50,
-                lineHeight: 50,
+                backgroundColor: INPUT_BG_COLOR,
+                marginBottom: PADDING,
+                width: ANSWER_WIDTH,
+                height: ANSWER_WIDTH / 4,
+                lineHeight: ANSWER_WIDTH / 4,
                 textAlign: 'center',
               }}>
               {theoryDepth}
             </Text>
           </View>
-          <View style={{flexBasis: 20}} />
+          <View style={{flexBasis: PADDING * 2}} />
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  inner: {
-    padding: 24,
-    flex: 1,
-    justifyContent: 'space-around',
-  },
-  header: {
-    fontSize: 36,
-    marginBottom: 48,
-  },
-  textInput: {
-    height: 40,
-    borderColor: '#000000',
-    borderBottomWidth: 1,
-    marginBottom: 36,
-  },
-  btnContainer: {
-    backgroundColor: 'white',
-    marginTop: 12,
-  },
-});
+
 export default App;
