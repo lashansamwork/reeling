@@ -34,7 +34,7 @@ const App = () => {
   const pressed = () => {
     let answer = 0;
     if (depth > 0 && (angle > 0 || angle === 0) && angle < 91) {
-      answer = depth / Math.cos(toRadians(angle));
+      answer = depth * Math.cos(toRadians(angle));
       setTheoryDepth(answer.toPrecision(4) + ' Feet(s)');
     }
     if (depth === '' || depth < 0) {
